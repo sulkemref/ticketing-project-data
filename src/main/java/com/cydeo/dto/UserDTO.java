@@ -13,19 +13,19 @@ import javax.validation.constraints.*;
 public class UserDTO {
 
     @NotBlank
-    @Size(max = 15, min = 2)
+//    @Size(max = 15, min = 2)
     private String firstName;
 
     @NotBlank
-    @Size(max = 15, min = 2)
+//    @Size(max = 15, min = 2)
     private String lastName;
 
     @NotBlank
-    @Email
+//    @Email
     private String userName;
 
     @NotBlank
-    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,}")
+//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,}")
     private String passWord;
 
     @NotNull
@@ -34,7 +34,7 @@ public class UserDTO {
     private boolean enabled;
 
     @NotBlank
-    @Pattern(regexp = "^\\d{10}$")
+//    @Pattern(regexp = "^\\d{10}$")
     private String phone;
 
     @NotNull
