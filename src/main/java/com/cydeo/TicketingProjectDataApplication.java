@@ -18,4 +18,9 @@ public class TicketingProjectDataApplication {
         return new ModelMapper();
     }
 
+    @Bean
+    public Class beanClass(){
+        return Class.class;
+    }
+
 }
