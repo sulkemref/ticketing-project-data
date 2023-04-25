@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.function.Predicate.not;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -30,7 +32,8 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> listAllUsers() {
 
         return userRepository.findAll(Sort.by("firstName"))
-                .stream().map(userMapper::convertToDto)
+                .stream()
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -62,5 +65,26 @@ public class UserServiceImpl implements UserService {
         userRepository.save(entity);
 
         return findByUserName(user.getUserName());
+    }
+
+    @Override
+    public void safeDeleteByUserName(String userName) {
+
+        User user = userRepository.findByUserName(userName);
+
+        user.setIsDeleted(true);
+
+        userRepository.save(user);
+
+    }
+
+    @Override
+    public List<UserDTO> listAllByRole(String role) {
+
+        List<User> users = userRepository.findByRoleDescriptionIgnoreCase(role);
+
+        return users.stream()
+                .map(userMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 }
