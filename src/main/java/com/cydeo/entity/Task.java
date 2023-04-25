@@ -21,11 +21,13 @@ import java.time.LocalDate;
 @Where(clause = "is_deleted=false")
 public class Task extends BaseEntity{
 
-    @OneToOne
-    private Project project;
-
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_employee_id")
     private User assignedEmployee;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     private String taskSubject;
     private String taskDetail;
