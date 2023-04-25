@@ -94,11 +94,11 @@ public class ProjectController {
         return "redirect:/project/create";
 
     }
-//
+
 //    @GetMapping("/manager/project-status")
 //    public String getProjectByManager(Model model) {
 //
-//        UserDTO manager = userService.findById("john@cydeo.com");
+//        UserDTO manager = userService.findByUserName("john@cydeo.com");
 //        List<ProjectDTO> projects = projectService.getCountedListOfProjectDTO(manager);
 //
 //        model.addAttribute("projects", projects);
@@ -106,11 +106,11 @@ public class ProjectController {
 //        return "/manager/project-status";
 //
 //    }
-//
-//    @GetMapping("/manager/complete/{projectCode}")
-//    public String managerCompleteProject(@PathVariable("projectCode") String projectCode) {
-//        projectService.complete(projectService.findById(projectCode));
-//        return "redirect:/project/manager/project-status";
-//    }
+
+    @GetMapping("/manager/complete/{projectCode}")
+    public String managerCompleteProject(@PathVariable("projectCode") String projectCode) {
+        projectService.complete(projectCode);
+        return "redirect:/project/manager/project-status";
+    }
 
 }

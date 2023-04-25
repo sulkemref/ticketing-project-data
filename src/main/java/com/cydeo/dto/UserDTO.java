@@ -13,7 +13,6 @@ import javax.validation.constraints.*;
 public class UserDTO {
 
     private Long id;
-
     @NotBlank
 //    @Size(max = 15, min = 2)
     private String firstName;
