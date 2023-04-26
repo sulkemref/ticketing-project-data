@@ -111,5 +111,4 @@ public class ProjectController {
         projectService.complete(projectCode);
         return "redirect:/project/manager/project-status";
     }
-
 }
