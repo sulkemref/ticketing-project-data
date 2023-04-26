@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-
     private final TaskMapper taskMapper;
     private final ProjectMapper projectMapper;
 
@@ -31,11 +30,6 @@ public class TaskServiceImpl implements TaskService {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
         this.projectMapper = projectMapper;
-    }
-
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
-        this.taskRepository = taskRepository;
-        this.taskMapper = taskMapper;
     }
 
     @Override
@@ -109,6 +103,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteByProject(ProjectDTO projectDTO) {
-        Project project = projectMapper.convert
+        Project project = projectMapper.convertToEntity(projectDTO);
+        List<Task> tasks = taskRepository.findAllByProject(project);
+        tasks.forEach(task -> delete(task.getId()));
+
     }
 }

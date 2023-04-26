@@ -32,7 +32,6 @@ public class RoleServiceImpl implements RoleService {
                 .map(roleMapper::convertToDto)
                 .collect(Collectors.toList());
     }
-
     @Override
     public RoleDTO findById(Long id) {
         return roleMapper.convertToDto(roleRepository.findById(id).orElseThrow());
