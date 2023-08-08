@@ -10,14 +10,12 @@ import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.function.Predicate.not;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllUsers() {
 
-        return userRepository.findAll(Sort.by("firstName"))
+        return userRepository.findAllByIsDeletedOrderByFirstNameDesc(false)
                 .stream()
                 .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
@@ -45,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUserName(String username) {
-        return userMapper.convertToDto(userRepository.findByUserName(username));
+        return userMapper.convertToDto(userRepository.findByUserNameAndIsDeleted(username,false));
     }
 
     @Override
@@ -54,15 +52,15 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public void deleteByUserName(String username) {
-        userRepository.deleteByUserName(username);
-    }
+//    @Override
+//    public void deleteByUserName(String username) {
+//        userRepository.deleteByUserName(username);
+//    }
 
     @Override
     public UserDTO update(UserDTO user) {
 
-        Long id  = userRepository.findByUserName(user.getUserName()).getId();
+        Long id  = userRepository.findByUserNameAndIsDeleted(user.getUserName(),false).getId();
 
         User entity = userMapper.convertToEntity(user);
 
@@ -76,12 +74,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void safeDeleteByUserName(String userName) {
 
-        User user = userRepository.findByUserName(userName);
+        User user = userRepository.findByUserNameAndIsDeleted(userName,false);
 
         if(checkIfUserCanBeDeleted(user)){
-
             user.setIsDeleted(true);
-
+            user.setUserName(user.getUserName()+"-"+user.getId());
             userRepository.save(user);
         }
     }
@@ -89,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllByRole(String role) {
 
-        List<User> users = userRepository.findByRoleDescriptionIgnoreCase(role);
+        List<User> users = userRepository.findByRoleDescriptionIgnoreCaseAndIsDeleted(role,false);
 
         return users.stream()
                 .map(userMapper::convertToDto)

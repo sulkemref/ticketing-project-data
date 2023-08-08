@@ -1,6 +1,8 @@
 package com.cydeo.entity;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
